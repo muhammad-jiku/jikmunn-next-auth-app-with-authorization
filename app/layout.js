@@ -1,6 +1,8 @@
 import Footer from '@/components/Shared/Footer';
 import Navbar from '@/components/Shared/Navbar';
+import { Suspense } from 'react';
 import '../styles/globals.css';
+import Loading from './loading';
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,7 +14,15 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="flex flex-col min-h-screen">
         <Navbar />
-        {children}
+        <Suspense
+          fallback={
+            <>
+              <Loading />
+            </>
+          }
+        >
+          {children}
+        </Suspense>
         <Footer />
       </body>
     </html>

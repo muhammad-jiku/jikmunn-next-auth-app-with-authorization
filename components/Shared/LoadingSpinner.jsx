@@ -3,7 +3,7 @@
 import React from 'react';
 import loadingImg from '../../assets/gifs/loading.gif';
 
-const Loading = () => {
+const LoadingSpinner = () => {
   return (
     <div className="hero min-h-screen">
       <div className="hero-content text-center">
@@ -15,4 +15,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default LoadingSpinner;
