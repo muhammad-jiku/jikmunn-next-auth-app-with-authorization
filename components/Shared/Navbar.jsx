@@ -15,10 +15,10 @@ const Navbar = () => {
         <>
           <li>
             <Link href={`/admin/dashboard`}>Admin</Link>
-          </li>{' '}
+          </li>
           <li>
             <Link href={`/user/dashboard`}>User</Link>
-          </li>{' '}
+          </li>
           <li>
             <button className="btn btn-primary">Sign Out</button>
           </li>

@@ -4,6 +4,7 @@ import React from 'react';
 import googleLogo from '../../assets/images/google.png';
 import githubLogo from '../../assets/images/github.png';
 import twitterLogo from '../../assets/images/twitter.png';
+import { signIn } from 'next-auth/react';
 
 const SocialSignIn = () => {
   const handleGoogleLogin = async () => {
@@ -17,16 +18,19 @@ const SocialSignIn = () => {
     //    console.log('google error => ', err);
     //  }
   };
+
   const handleGithubLogin = async () => {
     console.log('github sign in');
-    //  try {
-    //    await signIn('github', {
-    //      // callbackUrl: 'http://localhost:3000',
-    //      callbackUrl: 'https://jikmunn-next-auth-app.vercel.app',
-    //    });
-    //  } catch (err) {
-    //    console.log('github error => ', err);
-    //  }
+    try {
+      await signIn('github', {
+        callbackUrl: 'http://localhost:3000',
+        //  callbackUrl: 'https://jikmunn-next-auth-app.vercel.app',
+        // redirect: false,
+      });
+    } catch (err) {
+      console.log('github error => ', err);
+      console.log('github error ====', err.message);
+    }
   };
 
   const handleTwitterLogin = async () => {

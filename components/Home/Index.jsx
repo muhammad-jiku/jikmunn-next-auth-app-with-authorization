@@ -7,7 +7,11 @@ import LoadingSpinner from '../Shared/LoadingSpinner';
 
 const HomeSection = () => {
   const { data: session, status } = useSession();
-  console.log(session);
+
+  console.log('session', session);
+  const { user, expires } = session;
+  console.log('user', user);
+  console.log('expires', expires);
   return (
     <div>
       {status === 'loading' ? (
@@ -22,7 +26,7 @@ const HomeSection = () => {
                 {session ? (
                   <>
                     <h1 className="text-2xl font-bold">
-                      Hello, there! We welcome you here!
+                      Hello, {user.name}! We welcome you here!
                     </h1>
                   </>
                 ) : (
@@ -32,7 +36,7 @@ const HomeSection = () => {
                     </h1>
                     <br />
                     <button className="btn btn-primary text-white font-bold cursor-pointer">
-                      <Link href={'/sign-in'}>Sign In</Link>
+                      <Link href={'/signin'}>Sign In</Link>
                     </button>
                   </>
                 )}
