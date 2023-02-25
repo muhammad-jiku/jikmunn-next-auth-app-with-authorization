@@ -9,9 +9,6 @@ const HomeSection = () => {
   const { data: session, status } = useSession();
 
   console.log('session', session);
-  const { user, expires } = session;
-  console.log('user', user);
-  console.log('expires', expires);
   return (
     <div>
       {status === 'loading' ? (
@@ -26,7 +23,7 @@ const HomeSection = () => {
                 {session ? (
                   <>
                     <h1 className="text-2xl font-bold">
-                      Hello, {user.name}! We welcome you here!
+                      Hello, {session?.user?.name}! We welcome you here!
                     </h1>
                   </>
                 ) : (

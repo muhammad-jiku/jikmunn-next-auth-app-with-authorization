@@ -1,11 +1,16 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 
 const Navbar = () => {
   const { data: session } = useSession();
+
+  const signingOut = async () => {
+    signOut();
+  };
+
   const menuItems = (
     <>
       <li>
@@ -20,7 +25,9 @@ const Navbar = () => {
             <Link href={`/user/dashboard`}>User</Link>
           </li>
           <li>
-            <button className="btn btn-primary">Sign Out</button>
+            <button className="btn btn-primary" onClick={signingOut}>
+              Sign Out
+            </button>
           </li>
         </>
       ) : (
