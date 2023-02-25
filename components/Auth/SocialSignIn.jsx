@@ -3,6 +3,7 @@
 import React from 'react';
 import googleLogo from '../../assets/images/google.png';
 import githubLogo from '../../assets/images/github.png';
+import twitterLogo from '../../assets/images/twitter.png';
 
 const SocialSignIn = () => {
   const handleGoogleLogin = async () => {
@@ -27,6 +28,18 @@ const SocialSignIn = () => {
     //    console.log('github error => ', err);
     //  }
   };
+
+  const handleTwitterLogin = async () => {
+    console.log('twitter sign in');
+    //  try {
+    //    await signIn('github', {
+    //      // callbackUrl: 'http://localhost:3000',
+    //      callbackUrl: 'https://jikmunn-next-auth-app.vercel.app',
+    //    });
+    //  } catch (err) {
+    //    console.log('github error => ', err);
+    //  }
+  };
   return (
     <div>
       <button
@@ -40,6 +53,13 @@ const SocialSignIn = () => {
         onClick={handleGithubLogin}
       >
         Continue with <img src={githubLogo.src} alt="github" className="ml-2" />{' '}
+      </button>{' '}
+      <button
+        className="btn btn-outline btn-primary w-full my-2"
+        onClick={handleTwitterLogin}
+      >
+        Continue with{' '}
+        <img src={twitterLogo.src} alt="github" className="ml-2" />{' '}
       </button>
     </div>
   );
