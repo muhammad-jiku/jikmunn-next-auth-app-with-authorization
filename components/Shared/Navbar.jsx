@@ -1,33 +1,38 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const menuItems = (
     <>
       <li>
         <Link href={`/`}>Home</Link>
-      </li>{' '}
-      <li>
-        <Link href={`/admin/dashboard`}>Admin</Link>
-      </li>{' '}
-      <li>
-        <Link href={`/user/dashboard`}>User</Link>
-      </li>{' '}
-      <>
-        <li>
-          <button className="btn btn-primary">Sign Out</button>
-        </li>
-      </>
-      <>
-        <li>
-          <Link href={`/signin`}>Sign In</Link>
-        </li>
-        <li>
-          <Link href={`/signup`}>Sign Up</Link>
-        </li>
-      </>
+      </li>
+      {session ? (
+        <>
+          <li>
+            <Link href={`/admin/dashboard`}>Admin</Link>
+          </li>{' '}
+          <li>
+            <Link href={`/user/dashboard`}>User</Link>
+          </li>{' '}
+          <li>
+            <button className="btn btn-primary">Sign Out</button>
+          </li>
+        </>
+      ) : (
+        <>
+          <li>
+            <Link href={`/signin`}>Sign In</Link>
+          </li>
+          <li>
+            <Link href={`/signup`}>Sign Up</Link>
+          </li>
+        </>
+      )}
     </>
   );
 
@@ -37,7 +42,7 @@ const Navbar = () => {
         <button className="btn btn-ghost normal-case text-xs sm:text-sm md:text-xl text-primary">
           <Link href={`/`}>
             <span className="text-primary">
-              Jikmunn Next Authorization and Authentication
+              Authorization & Authentication App
             </span>
           </Link>
         </button>
