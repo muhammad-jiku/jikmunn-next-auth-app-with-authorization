@@ -3,17 +3,19 @@
 import React from 'react';
 
 const AdminDash = () => {
-  <>
-    <div className="hero min-h-screen">
-      <div className="hero-content text-center">
-        <div className="max-w-md">
-          <h1 className="text-2xl font-bold">
-            Protected route for only admin!!!
-          </h1>
+  return (
+    <>
+      <div className="hero min-h-screen">
+        <div className="hero-content text-center">
+          <div className="max-w-md">
+            <h1 className="text-2xl font-bold">
+              Protected route for only admin!!!
+            </h1>
+          </div>
         </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 };
 
 export default AdminDash;

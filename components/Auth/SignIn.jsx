@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import SocialSignIn from './SocialSignIn';
 
 const SignIn = () => {
@@ -14,7 +15,7 @@ const SignIn = () => {
   } = useForm();
 
   let errorMessage;
-  const router = useRouter();
+  // const router = useRouter();
 
   const onSubmit = async () => {
     const email = watch('email');

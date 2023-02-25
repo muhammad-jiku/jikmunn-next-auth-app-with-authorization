@@ -10,10 +10,10 @@ const Navbar = () => {
         <Link href={`/`}>Home</Link>
       </li>{' '}
       <li>
-        <Link href={`/admin/dashboard`}>Admin Dashboard</Link>
+        <Link href={`/admin/dashboard`}>Admin</Link>
       </li>{' '}
       <li>
-        <Link href={`/user/dashboard`}>User Dashboard</Link>
+        <Link href={`/user/dashboard`}>User</Link>
       </li>{' '}
       <>
         <li>
@@ -22,10 +22,10 @@ const Navbar = () => {
       </>
       <>
         <li>
-          <Link href={`/sign-in`}>Sign In</Link>
+          <Link href={`/signin`}>Sign In</Link>
         </li>
         <li>
-          <Link href={`/sign-up`}>Sign Up</Link>
+          <Link href={`/signup`}>Sign Up</Link>
         </li>
       </>
     </>
