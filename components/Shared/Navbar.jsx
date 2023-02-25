@@ -3,12 +3,18 @@
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const signingOut = async () => {
-    signOut();
+    const data = await signOut({
+      redirect: false,
+      callbackUrl: '/',
+    });
+    router.push(data.url);
   };
 
   const menuItems = (
