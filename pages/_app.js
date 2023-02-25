@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import '../styles/globals.css';
 import Head from 'next/head';
+import { SessionProvider } from 'next-auth/react';
+import MainLayout from '@/components/Layout/Layout';
 
 export default function App({
   Component,
@@ -28,8 +30,14 @@ export default function App({
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
-        <Component {...pageProps} />
+        <SessionProvider
+          session={session}
+          // basePath="/user/api/auth"
+        >
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </SessionProvider>
       </>
     );
   }
