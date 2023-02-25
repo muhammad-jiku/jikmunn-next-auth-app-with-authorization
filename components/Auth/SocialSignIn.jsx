@@ -9,14 +9,16 @@ import { signIn } from 'next-auth/react';
 const SocialSignIn = () => {
   const handleGoogleLogin = async () => {
     console.log('google sign in');
-    //  try {
-    //    await signIn('google', {
-    //      // callbackUrl: 'http://localhost:3000',
-    //      callbackUrl: 'https://jikmunn-next-auth-app.vercel.app',
-    //    });
-    //  } catch (err) {
-    //    console.log('google error => ', err);
-    //  }
+    try {
+      await signIn('google', {
+        callbackUrl: 'http://localhost:3000',
+        //  callbackUrl: 'https://jikmunn-next-auth-app.vercel.app',
+        // redirect: false,
+      });
+    } catch (err) {
+      console.log('google error => ', err);
+      console.log('google error ====', err.message);
+    }
   };
 
   const handleGithubLogin = async () => {
