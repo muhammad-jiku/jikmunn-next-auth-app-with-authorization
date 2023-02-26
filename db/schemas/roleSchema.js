@@ -6,7 +6,11 @@ export const roleSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    permissions: [{ type: String }],
+    permissions: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
