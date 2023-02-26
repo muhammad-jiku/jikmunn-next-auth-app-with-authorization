@@ -4,6 +4,8 @@ import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import SocialSignIn from './SocialSignIn';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const SignIn = () => {
   const {
@@ -15,7 +17,7 @@ const SignIn = () => {
   } = useForm();
 
   let errorMessage;
-  // const router = useRouter();
+  const router = useRouter();
 
   const onSubmit = async () => {
     const email = watch('email');
@@ -27,24 +29,24 @@ const SignIn = () => {
         password,
       };
 
-      console.log(oldUser);
-      // const existedUser = JSON.stringify(oldUser);
-      // const existedUser = oldUser;
+      console.log('user check.....', oldUser);
+      const existedUser = JSON.stringify(oldUser);
 
-      // const data = await signIn('credentials', {
-      //   redirect: false,
-      //   email: existedUser?.email,
-      //   password: existedUser?.password,
-      //   callbackUrl: '/',
-      // });
+      console.log('user existance.....', existedUser);
+      const data = await signIn('email', {
+        redirect: false,
+        email: existedUser?.email,
+        callbackUrl: '/',
+      });
 
-      // if (data?.ok) {
-      //   console.log('signin data', data);
-      //   reset();
-      //   router.push(data?.url);
-      // }
+      if (data?.ok) {
+        console.log('signin data', data);
+        reset();
+        router.push(data?.url);
+      }
     } catch (err) {
-      console.log('sign in err', err);
+      console.log('email sign in err', err);
+      console.log('email sign in err msg', err.message);
     }
   };
 
