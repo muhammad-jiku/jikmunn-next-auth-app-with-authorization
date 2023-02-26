@@ -16,6 +16,15 @@ const sessionSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    accessToken: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    provider: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
