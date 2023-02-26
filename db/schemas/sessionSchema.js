@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const sessionSchema = new mongoose.Schema(
+export const sessionSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -30,5 +30,3 @@ const sessionSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-module.exports = sessionSchema;

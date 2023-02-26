@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const roleSchema = new mongoose.Schema(
+export const roleSchema = new mongoose.Schema(
   {
     name: {
       type: String,

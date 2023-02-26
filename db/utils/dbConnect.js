@@ -1,15 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 export const db_uri = `mongodb+srv://${process.env.DB_AUTHOR}:${process.env.DB_PASS}@cluster0.uo61uba.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
-const databaseConnect = async () => {
+export const databaseConnect = async () => {
   mongoose.set('strictQuery', false);
   await mongoose
     .connect(db_uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
     })
     .then(() => {
       console.log('DB connected!!');
@@ -19,5 +17,3 @@ const databaseConnect = async () => {
       process.exit();
     });
 };
-
-module.exports = databaseConnect;
