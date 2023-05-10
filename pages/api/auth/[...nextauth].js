@@ -28,29 +28,51 @@ export const authOptions = {
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
+    // CredentialsProvider({
+    //   name: 'Credentials',
+    //   // credentials: {
+    //   //   email: { label: 'Email', type: 'email' },
+    //   //   password: { label: 'Password', type: 'password' },
+    //   // },
+    //   async authorize(credentials, req) {
+    //     console.log('req....', req);
+
+    //     await databaseConnect();
+    //     const { email, password } = await credentials;
+    //     console.log('credentials....', credentials);
+
+    //     const user = await User.findOne({ email });
+
+    //     if (!user) {
+    //       throw new Error('Invalid Email or Password!');
+    //     }
+    //     console.log('hola user ', user);
+    //     const isPasswordMatched = await bcrypt.compare(
+    //       password,
+    //       user?.password
+    //     );
+
+    //     if (!isPasswordMatched) {
+    //       throw new Error('Invalid Email or Password');
+    //     }
+
+    //     return user;
+    //   },
+    // }),
     CredentialsProvider({
-      name: 'Credentials',
-      // credentials: {
-      //   email: { label: 'Email', type: 'email' },
-      //   password: { label: 'Password', type: 'password' },
-      // },
       async authorize(credentials, req) {
         console.log('req....', req);
-
         await databaseConnect();
-        const { email, password } = await credentials;
-        console.log('credentials....', credentials);
 
-        const user = await User.findOne({ email });
+        const { email, password } = await credentials;
+
+        const user = await User.findOne({ email }).select('+password');
 
         if (!user) {
-          throw new Error('Invalid Email or Password!');
+          throw new Error('Invalid Email or Password');
         }
-        console.log('hola user ', user);
-        const isPasswordMatched = await bcrypt.compare(
-          password,
-          user?.password
-        );
+
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatched) {
           throw new Error('Invalid Email or Password');
@@ -60,77 +82,96 @@ export const authOptions = {
       },
     }),
   ],
+  // callbacks: {
+  //   async jwt(token, user, account) {
+  //     if (user) {
+  //       token.email = user.email;
+  //       token.role = user.role;
+  //     }
+
+  //     if (account?.provider === 'google') {
+  //       token.googleId = account.id;
+  //     }
+
+  //     if (account?.provider === 'github') {
+  //       token.githubId = account.id;
+  //     }
+
+  //     return token;
+  //   },
+  //   async session(session, token) {
+  //     session.user.email = token.email;
+  //     session.user.role = token.role;
+  //     session.user.googleId = token.googleId;
+  //     session.user.githubId = token.githubId;
+
+  //     return session;
+  //   },
+  //   async redirect(url, baseUrl) {
+  //     if (url.startsWith(baseUrl)) {
+  //       return url;
+  //     }
+
+  //     return baseUrl;
+  //   },
+  //   async jwt(token, user) {
+  //     if (user) {
+  //       token.email = user.email;
+  //       token.role = user.role;
+  //     }
+
+  //     return token;
+  //   },
+  //   async session(session, token) {
+  //     session.user.email = token.email;
+  //     session.user.role = token.role;
+
+  //     return session;
+  //   },
+  //   async session(session, token) {
+  //     session.user.email = token.email;
+  //     session.user.role = token.role;
+
+  //     return session;
+  //   },
+  // },
   callbacks: {
-    async jwt(token, user, account) {
-      if (user) {
-        token.email = user.email;
-        token.role = user.role;
-      }
-
-      if (account?.provider === 'google') {
-        token.googleId = account.id;
-      }
-
-      if (account?.provider === 'github') {
-        token.githubId = account.id;
-      }
+    jwt: async ({ token, user }) => {
+      console.log('token callbacks', token);
+      console.log('user callbacks', user);
+      user && (token.user = user);
 
       return token;
     },
-    async session(session, token) {
-      session.user.email = token.email;
-      session.user.role = token.role;
-      session.user.googleId = token.googleId;
-      session.user.githubId = token.githubId;
+    session: async ({ session, token }) => {
+      console.log('token sessions', token);
+      console.log('session', session);
+      session.user = token.user;
 
-      return session;
-    },
-    async redirect(url, baseUrl) {
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-
-      return baseUrl;
-    },
-    async jwt(token, user) {
-      if (user) {
-        token.email = user.email;
-        token.role = user.role;
-      }
-
-      return token;
-    },
-    async session(session, token) {
-      session.user.email = token.email;
-      session.user.role = token.role;
-
-      return session;
-    },
-    async session(session, token) {
-      session.user.email = token.email;
-      session.user.role = token.role;
+      // delete password from session
+      delete session?.user?.password;
 
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
   // adapter: MongoDBAdapter(clientPromise),
   session: {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  jwt: {
-    secret: process.env.JWT_SECRET,
-    encode: async ({ secret, token }) => {
-      return await verifyToken(token, secret);
-    },
-    decode: async ({ secret, token }) => {
-      return await verifyToken(token, secret);
-    },
-  },
+  // jwt: {
+  //   secret: process.env.JWT_SECRET,
+  //   encode: async ({ secret, token }) => {
+  //     return await verifyToken(token, secret);
+  //   },
+  //   decode: async ({ secret, token }) => {
+  //     return await verifyToken(token, secret);
+  //   },
+  // },
   pages: {
     signIn: '/signin',
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
