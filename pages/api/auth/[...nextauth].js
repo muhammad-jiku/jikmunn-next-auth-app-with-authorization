@@ -29,21 +29,17 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
       name: 'Credentials',
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       // credentials: {
       //   email: { label: 'Email', type: 'email' },
       //   password: { label: 'Password', type: 'password' },
       // },
       async authorize(credentials, req) {
         console.log('req....', req);
-        // Add logic here to look up the user from the credentials supplied
+
         await databaseConnect();
         const { email, password } = await credentials;
+        console.log('credentials....', credentials);
 
         const user = await User.findOne({ email });
 
@@ -64,10 +60,73 @@ export const authOptions = {
       },
     }),
   ],
-  secret: process.env.JWT_SECRET,
+  callbacks: {
+    async jwt(token, user, account) {
+      if (user) {
+        token.email = user.email;
+        token.role = user.role;
+      }
+
+      if (account?.provider === 'google') {
+        token.googleId = account.id;
+      }
+
+      if (account?.provider === 'github') {
+        token.githubId = account.id;
+      }
+
+      return token;
+    },
+    async session(session, token) {
+      session.user.email = token.email;
+      session.user.role = token.role;
+      session.user.googleId = token.googleId;
+      session.user.githubId = token.githubId;
+
+      return session;
+    },
+    async redirect(url, baseUrl) {
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+
+      return baseUrl;
+    },
+    async jwt(token, user) {
+      if (user) {
+        token.email = user.email;
+        token.role = user.role;
+      }
+
+      return token;
+    },
+    async session(session, token) {
+      session.user.email = token.email;
+      session.user.role = token.role;
+
+      return session;
+    },
+    async session(session, token) {
+      session.user.email = token.email;
+      session.user.role = token.role;
+
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   // adapter: MongoDBAdapter(clientPromise),
   session: {
-    strategy: 'jwt',
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    encode: async ({ secret, token }) => {
+      return await verifyToken(token, secret);
+    },
+    decode: async ({ secret, token }) => {
+      return await verifyToken(token, secret);
+    },
   },
   pages: {
     signIn: '/signin',

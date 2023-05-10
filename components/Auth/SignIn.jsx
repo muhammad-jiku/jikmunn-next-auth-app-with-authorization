@@ -23,26 +23,24 @@ const SignIn = () => {
     const email = watch('email');
     const password = watch('password');
 
+    console.log(email, password);
+    console.log('window.location.href =', window.location.href);
+
     try {
-      const oldUser = {
+      const data = await signIn('credentials', {
         email,
         password,
-      };
-
-      console.log('user check.....', oldUser);
-      const existedUser = JSON.stringify(oldUser);
-
-      console.log('user existance.....', existedUser);
-      const data = await signIn('email', {
-        redirect: false,
-        email: existedUser?.email,
         callbackUrl: '/',
+        redirect: false,
       });
 
       if (data?.ok) {
+        console.log('window.location.href =', window.location.href);
+        window.location.href = data.url;
+        console.log('window.location.href', window.location.href);
         console.log('signin data', data);
         reset();
-        router.push(data?.url);
+        router.push(`${window.location.href}`);
       }
     } catch (err) {
       console.log('email sign in err', err);
