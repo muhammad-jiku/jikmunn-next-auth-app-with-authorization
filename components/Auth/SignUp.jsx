@@ -4,8 +4,10 @@ import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import SocialSignIn from './SocialSignIn';
+import { useRouter } from 'next/navigation';
 
 const SignUp = () => {
+  const router = useRouter();
   const {
     register,
     formState: { errors },
@@ -35,32 +37,32 @@ const SignUp = () => {
       };
       console.log(newUser);
       // sign up method
-      // await fetch('http://localhost:3000/api/auth/sign-up', {
-      //  await fetch('https://jikmunn-next-auth-app.vercel.app/api/auth/sign-up', {
-      //    method: 'POST',
-      //    headers: {
-      //      // authorization: `Bearer ${localStorage?.getItem('accessToken')}`,
-      //      'Content-Type': 'application/json',
-      //    },
-      //    body: JSON.stringify(newUser),
-      //  })
-      //    .then((res) => {
-      //      // console.log('res ', res);
-      //      return res.json();
-      //    })
-      //    .then((data) => {
-      //      if (data) {
-      //        console.log('sign up data ', data);
-      //        console.log('sign up data message', data?.message);
-      //        reset();
-      //        router.push('https://jikmunn-next-auth-app.vercel.app/');
-      //      } else {
-      //        console.log('Something went wrong!');
-      //      }
-      //    })
-      //    .catch((err) => {
-      //      console.log('sign up err', err);
-      //    });
+      await fetch('http://localhost:3000/api/auth/signup', {
+        //  await fetch('https://jikmunn-next-auth-app.vercel.app/api/auth/sign-up', {
+        method: 'POST',
+        headers: {
+          // authorization: `Bearer ${localStorage?.getItem('accessToken')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      })
+        .then((res) => {
+          // console.log('res ', res);
+          return res.json();
+        })
+        .then((data) => {
+          if (data) {
+            console.log('sign up data ', data);
+            console.log('sign up data message', data?.message);
+            reset();
+            router.push('/');
+          } else {
+            console.log('Something went wrong!');
+          }
+        })
+        .catch((err) => {
+          console.log('sign up err', err);
+        });
     }
   };
 

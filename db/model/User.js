@@ -18,13 +18,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    role: [
-      {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
+    role: {
+      type: String,
+      enum: {
+        values: ['user', 'admin'],
+        message: 'User role must be mentioned!',
       },
-    ],
+      default: 'user',
+    },
     verified: {
       type: Boolean,
       default: false,
