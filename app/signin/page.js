@@ -1,6 +1,5 @@
-import SignIn from '@/components/Auth/SignIn';
 import React from 'react';
-
+import { SignIn } from '@/components/Auth';
 
 export const metadata = {
   title: 'Sign In - Authorization and Authentication App',
