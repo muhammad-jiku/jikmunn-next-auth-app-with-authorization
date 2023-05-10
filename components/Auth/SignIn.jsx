@@ -24,7 +24,6 @@ const SignIn = () => {
     const password = watch('password');
 
     console.log(email, password);
-    console.log('window.location.href =', window.location.href);
 
     try {
       const data = await signIn('credentials', {
@@ -33,14 +32,12 @@ const SignIn = () => {
         callbackUrl: '/',
         redirect: false,
       });
+      console.log('signin data', data);
 
       if (data?.ok) {
-        console.log('window.location.href =', window.location.href);
-        window.location.href = data.url;
-        console.log('window.location.href', window.location.href);
-        console.log('signin data', data);
+        console.log('signin data............', data);
         reset();
-        router.push(`${window.location.href}`);
+        router.push(data?.url);
       }
     } catch (err) {
       console.log('email sign in err', err);

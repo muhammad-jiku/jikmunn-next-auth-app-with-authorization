@@ -19,11 +19,12 @@ const HomeSection = () => {
         <>
           <div className="hero min-h-screen">
             <div className="hero-content text-center">
-              <div className="max-w-md">
+              <div className="max-w-lg">
                 {session ? (
                   <>
                     <h1 className="text-2xl font-bold">
-                      Hello, {session?.user?.name}! We welcome you here!
+                      Hello, {session?.user?.username || session?.user?.email}!
+                      We welcome you here!
                     </h1>
                   </>
                 ) : (

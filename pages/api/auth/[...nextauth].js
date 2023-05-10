@@ -6,6 +6,7 @@ import GitHubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import { User } from '@/db/model/User';
+import { databaseConnect } from '@/db/utils/dbConnect';
 
 export const authOptions = {
   providers: [
@@ -61,9 +62,8 @@ export const authOptions = {
     // }),
     CredentialsProvider({
       async authorize(credentials, req) {
-        console.log('req....', req);
         await databaseConnect();
-
+        console.log('credentials...', credentials);
         const { email, password } = await credentials;
 
         const user = await User.findOne({ email }).select('+password');
@@ -71,7 +71,7 @@ export const authOptions = {
         if (!user) {
           throw new Error('Invalid Email or Password');
         }
-
+        console.log('hola user ', user);
         const isPasswordMatched = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatched) {
@@ -137,16 +137,18 @@ export const authOptions = {
   // },
   callbacks: {
     jwt: async ({ token, user }) => {
-      console.log('token callbacks', token);
-      console.log('user callbacks', user);
+      console.log('1.token callbacks', token);
+      console.log('2.user callbacks', user);
       user && (token.user = user);
+      console.log('3.user = ', user);
 
       return token;
     },
     session: async ({ session, token }) => {
-      console.log('token sessions', token);
-      console.log('session', session);
+      console.log('4.token sessions', token);
+      console.log('5.session', session);
       session.user = token.user;
+      console.log('6.session', session);
 
       // delete password from session
       delete session?.user?.password;
